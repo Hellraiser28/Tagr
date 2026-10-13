@@ -126,6 +126,7 @@
   "customTags": {
     "title": "Eigene Tags",
     "addTag": "Tag hinzufügen",
+    "allHidden": "Alle eigenen Tags dieses Songs sind ausgeblendet",
     "key": "Schlüssel",
     "value": "Wert",
     "empty": "Keine eigenen Tags",
@@ -285,7 +286,8 @@
     "description": "Tagr muss deine Musikordner einmal scannen, um eine lokale Datenbank aufzubauen. Dadurch geht das Durchsuchen deiner Bibliothek schnell und flüssig. Dabei verlassen keine Daten deinen Rechner.",
     "timing": "Das kann je nach Größe deiner Bibliothek einige Minuten dauern.",
     "scanButton": "Bibliothek scannen",
-    "scanning": "Deine Bibliothek wird gescannt..."
+    "scanning": "Deine Bibliothek wird gescannt...",
+    "insightsNotice": "Tagr kann einmal am Tag anonyme Nutzungsstatistiken (Insights) senden: nur Zahlen, niemals Dateinamen, Pfade oder Benutzernamen. Gesendet wird erst, wenn du zustimmst, und du kannst es in den Einstellungen abschalten."
   },
   "version": {
     "updateAvailable": "Version {version} ist verfügbar",
@@ -510,8 +512,17 @@
     "title": "Einstellungen",
     "sections": {
       "users": "Benutzer",
-      "integrations": "Integrationen von Drittanbietern"
+      "integrations": "Integrationen von Drittanbietern",
+      "detailPanel": "Song-Panel",
+      "insights": "Insights"
     }
+  },
+  "detailPanelSettings": {
+    "title": "Felder im Song-Panel",
+    "description": "Wähle, welche Felder das Song-Panel anzeigt. Ausgeblendete Felder behalten ihre Werte, sie werden nur nicht aufgelistet.",
+    "showAll": "Alle anzeigen",
+    "noCustomTags": "Noch keine eigenen Tags in deiner Bibliothek",
+    "tooltip": "Sichtbare Felder wählen"
   },
   "scrobbling": {
     "listenbrainz": "ListenBrainz",
@@ -532,5 +543,32 @@
   "listens": {
     "title": "Zuletzt gespielt",
     "empty": "Noch nichts abgespielt"
+  },
+  "insights": {
+    "title": "Insights",
+    "description": "Insights sind die anonymen Nutzungsstatistiken von Tagr. Einmal am Tag sendet Tagr einen kleinen Bericht (Version, Größe der Bibliothek, genutzte Funktionen), damit wir wissen, wie viele Leute Tagr nutzen und was sich verbessern lässt. Dateinamen, Pfade, Tags und Benutzernamen sind nie enthalten.",
+    "enable": "Insights senden (anonyme Nutzungsstatistiken)",
+    "forcedByEnv": "Durch die Umgebungsvariable TAGR_INSIGHTS deaktiviert.",
+    "lastSent": "Letzter Bericht gesendet am {date}.",
+    "neverSent": "Noch kein Bericht gesendet.",
+    "dashboard": "Die zusammengefassten Ergebnisse sind öffentlich: <link>zum Dashboard</link>.",
+    "preview": "Genau anzeigen, was gesendet wird",
+    "previewHelp": "Dieses JSON wird an {endpoint} gesendet:",
+    "enabledToast": "Insights aktiviert",
+    "disabledToast": "Insights deaktiviert",
+    "noticeTitle": "Hilf mit Insights, Tagr zu verbessern",
+    "noticeBody": "Insights sind anonyme Nutzungsstatistiken: Einmal am Tag kann Tagr einen kleinen Bericht senden, damit wir wissen, wie viele Leute Tagr nutzen und an welchen Funktionen sich die Arbeit lohnt. Bisher wurde nichts gesendet, und gesendet wird nur, wenn du es aktiviert lässt.",
+    "noticeDetails": "Genauen Bericht anzeigen",
+    "noticeKeep": "Aktiviert lassen",
+    "noticeDisable": "Deaktivieren",
+    "pendingNotice": "Bisher wurde nichts gesendet: Es geht los, sobald ein Admin bestätigt.",
+    "noticeSentTitle": "Was gesendet wird",
+    "noticeSent": "Tagr-Version, Betriebssystem und Architektur, Anzahl der Songs und Benutzer, Dateiformate und wie oft Funktionen wie Tag-Bearbeitung, intelligente Playlists oder Scrobbling genutzt werden.",
+    "noticeNeverTitle": "Was nie gesendet wird",
+    "noticeNever": "Dateinamen, Pfade, Tags, Benutzernamen, Tokens oder deine IP-Adresse.",
+    "noticeLater": "Du kannst das jederzeit unter Einstellungen → Insights ändern.",
+    "sendNow": "Jetzt senden",
+    "sentToast": "Bericht gesendet",
+    "sendFailedToast": "Bericht konnte nicht gesendet werden: {error}"
   }
 }
