@@ -4,8 +4,26 @@ export type Locale = (typeof locales)[number]
 
 export const defaultLocale: Locale = 'en'
 
-function isLocale(value: string): value is Locale {
+/** Each locale's name in its own language, as offered in the language setting. */
+export const localeNames: Record<Locale, string> = {
+  en: 'English',
+  de: 'Deutsch'
+}
+
+/** Stored under the `locale` config key when the user lets the browser decide. */
+export const AUTOMATIC_LOCALE = 'auto'
+
+export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value)
+}
+
+/**
+ * The UI language for a request: the user's saved choice when it names a supported locale, otherwise
+ * the language the browser asks for. "auto", an empty value or a locale that was removed all fall
+ * through to the browser.
+ */
+export function resolveLocale(saved: string | null | undefined, acceptLanguage: string | null | undefined): Locale {
+  return saved && isLocale(saved) ? saved : negotiateLocale(acceptLanguage)
 }
 
 /**

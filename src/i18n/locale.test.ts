@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import path from 'path'
 import { describe, expect, it } from 'vitest'
-import { defaultLocale, locales, negotiateLocale } from './locale'
+import { AUTOMATIC_LOCALE, defaultLocale, localeNames, locales, negotiateLocale, resolveLocale } from './locale'
 
 describe('negotiateLocale', () => {
   it('falls back to the default locale without a header', () => {
@@ -23,6 +23,25 @@ describe('negotiateLocale', () => {
     expect(negotiateLocale('fr-FR,fr;q=0.9')).toBe(defaultLocale)
     expect(negotiateLocale('*')).toBe(defaultLocale)
     expect(negotiateLocale('de;q=0')).toBe(defaultLocale)
+  })
+})
+
+describe('resolveLocale', () => {
+  it('prefers the language the user saved over the browser', () => {
+    expect(resolveLocale('de', 'en-US,en;q=0.9')).toBe('de')
+    expect(resolveLocale('en', 'de-DE,de;q=0.9')).toBe('en')
+  })
+
+  it('follows the browser when the setting is automatic, empty or no longer supported', () => {
+    expect(resolveLocale(AUTOMATIC_LOCALE, 'de-DE')).toBe('de')
+    expect(resolveLocale(null, 'de-DE')).toBe('de')
+    expect(resolveLocale('', 'de-DE')).toBe('de')
+    expect(resolveLocale('fr', 'de-DE')).toBe('de')
+    expect(resolveLocale(AUTOMATIC_LOCALE, null)).toBe(defaultLocale)
+  })
+
+  it('has a display name for every locale', () => {
+    expect(Object.keys(localeNames).sort()).toEqual([...locales].sort())
   })
 })
 

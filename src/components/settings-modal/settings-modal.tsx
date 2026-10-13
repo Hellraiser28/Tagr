@@ -1,6 +1,14 @@
 'use client'
 
-import { ChartNoAxesColumnIcon, PanelRightIcon, PlugIcon, SettingsIcon, UsersIcon, type LucideIcon } from 'lucide-react'
+import {
+  ChartNoAxesColumnIcon,
+  LanguagesIcon,
+  PanelRightIcon,
+  PlugIcon,
+  SettingsIcon,
+  UsersIcon,
+  type LucideIcon
+} from 'lucide-react'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
@@ -12,6 +20,7 @@ import { hasMinimumRole } from '@/features/users/lib/hasMinimumRole'
 import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { DetailPanelSettings } from './components/detail-panel-settings'
 import { InsightsSettings } from './components/insights-settings'
+import { LanguageSettings } from './components/language-settings'
 import { ListenBrainzSettings } from './components/listenbrainz-settings'
 import { UsersSettings } from './components/users-settings/users-settings'
 
@@ -39,6 +48,7 @@ const SETTINGS_SECTIONS = [
     minimumRole: 'listener',
     Content: DetailPanelSettings
   },
+  { id: 'language', labelKey: 'language', icon: LanguagesIcon, minimumRole: 'listener', Content: LanguageSettings },
   { id: 'insights', labelKey: 'insights', icon: ChartNoAxesColumnIcon, minimumRole: 'admin', Content: InsightsSettings }
 ] as const satisfies readonly SettingsSectionDefinition[]
 
