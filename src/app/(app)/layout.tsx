@@ -10,6 +10,7 @@ import {
 import { getConfigQueryKey } from '@/features/config/hooks/use-config'
 import prefetchConfig from '@/features/config/prefetch'
 import { countSongs } from '@/features/songs/songs.repository'
+import { AUTOMATIC_LOCALE } from '@/i18n/locale'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import { AppShell } from './app-shell'
 
@@ -28,7 +29,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   await Promise.all([
     prefetchConfig(queryClient, session, 'columnVisibility', DEFAULT_VISIBLE_COLUMNS),
     prefetchConfig(queryClient, session, 'sortOrder', DEFAULT_SORT_ORDER),
-    prefetchConfig(queryClient, session, 'detailPanelFields', DEFAULT_DETAIL_PANEL_FIELDS)
+    prefetchConfig(queryClient, session, 'detailPanelFields', DEFAULT_DETAIL_PANEL_FIELDS),
+    prefetchConfig(queryClient, session, 'locale', AUTOMATIC_LOCALE)
   ])
 
   return (

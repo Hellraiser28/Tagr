@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { UserRole } from '@/features/users/domain'
@@ -78,9 +79,22 @@ export function SettingsModal({ open, onOpenChange, section }: SettingsModalProp
     onOpenChange(value)
   }
 
+  const isMobile = breakpoint === 'mobile'
+
+  const tabsList = (
+    <TabsList variant='line' className='gap-1 max-md:mb-1 md:w-fit md:min-w-56 md:shrink-0'>
+      {sections.map(({ id, labelKey, icon: Icon }) => (
+        <TabsTrigger key={id} value={id} className='px-3 py-2'>
+          <Icon />
+          {t(`sections.${labelKey}`)}
+        </TabsTrigger>
+      ))}
+    </TabsList>
+  )
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className='max-w-2xl'>
+      <DialogContent className='max-w-2xl max-md:flex max-md:max-w-[calc(100%-8px)] max-md:h-[85dvh] max-md:flex-col'>
         <DialogHeader>
           <DialogTitle className='flex items-center gap-2'>
             <SettingsIcon className='h-5 w-5' />
@@ -89,23 +103,16 @@ export function SettingsModal({ open, onOpenChange, section }: SettingsModalProp
         </DialogHeader>
 
         <Tabs
-          orientation={breakpoint === 'mobile' ? 'horizontal' : 'vertical'}
+          orientation={isMobile ? 'horizontal' : 'vertical'}
           value={activeSection}
           onValueChange={value => setPickedSection(value as SettingsSection)}
-          className='min-h-96 gap-4'>
-          <TabsList variant='line' className='w-full gap-1 md:w-56 md:shrink-0'>
-            {sections.map(({ id, labelKey, icon: Icon }) => (
-              <TabsTrigger key={id} value={id} className='px-3 py-2'>
-                <Icon />
-                {t(`sections.${labelKey}`)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          className='min-w-0 gap-3 md:gap-4 max-md:min-h-0 max-md:flex-1 md:min-h-96'>
+          {isMobile ? <ScrollArea className='w-full shrink-0'>{tabsList}</ScrollArea> : tabsList}
 
-          <Separator orientation={breakpoint === 'mobile' ? 'horizontal' : 'vertical'} />
+          <Separator orientation={isMobile ? 'horizontal' : 'vertical'} />
 
           {sections.map(({ id, Content }) => (
-            <TabsContent key={id} value={id} className='h-[60vh] min-w-0 overflow-y-auto'>
+            <TabsContent key={id} value={id} className='min-h-0 min-w-0 overflow-y-auto md:h-[60vh]'>
               <Content />
             </TabsContent>
           ))}
