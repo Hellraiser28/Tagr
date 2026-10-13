@@ -7,6 +7,8 @@ import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useDetailPanelFields } from '@/features/songs/hooks/use-detail-panel-fields'
+import { useMetadataKeys } from '@/features/songs/hooks/use-metadata-keys'
 import { joinMultiValue, stripKeyPrefix } from '@/features/songs/metadata-helpers'
 import type { UserRole } from '@/features/users/domain'
 import { hasMinimumRole } from '@/features/users/lib/hasMinimumRole'
@@ -37,8 +39,13 @@ export function DetailPanelCustomMetadataSection({ songId, metadata }: DetailPan
   const t = useTranslations('customTags')
   const { data: session } = useSession()
   const [isAdding, setIsAdding] = useState(false)
+  const { isCustomTagVisible } = useDetailPanelFields()
+  const { data: metadataKeys = [] } = useMetadataKeys()
 
   const entries = groupMetadata(metadata)
+  const visibleEntries = entries.filter(({ key }) => isCustomTagVisible(key))
+
+  if (metadataKeys.length > 0 && !metadataKeys.some(isCustomTagVisible)) return null
 
   return (
     <div className='space-y-3'>
@@ -63,7 +70,10 @@ export function DetailPanelCustomMetadataSection({ songId, metadata }: DetailPan
       <Card className='p-0'>
         <CardContent className='p-0 divide-y divide-border'>
           {entries.length === 0 && !isAdding && <p className='p-3 text-xs text-muted-foreground'>{t('empty')}</p>}
-          {entries.map(({ key, value }) => (
+          {entries.length > 0 && visibleEntries.length === 0 && !isAdding && (
+            <p className='p-3 text-xs text-muted-foreground'>{t('allHidden')}</p>
+          )}
+          {visibleEntries.map(({ key, value }) => (
             <DetailPanelRow
               key={key}
               icon={<TagIcon className='w-4 h-4' />}

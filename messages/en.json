@@ -126,6 +126,7 @@
   "customTags": {
     "title": "Custom Tags",
     "addTag": "Add Tag",
+    "allHidden": "All custom tags of this song are hidden",
     "key": "Key",
     "value": "Value",
     "empty": "No custom tags",
@@ -512,8 +513,16 @@
     "sections": {
       "users": "Users",
       "integrations": "Third party integrations",
+      "detailPanel": "Song panel",
       "insights": "Insights"
     }
+  },
+  "detailPanelSettings": {
+    "title": "Song panel fields",
+    "description": "Choose which fields the song panel shows. Hidden fields keep their values, they are just not listed.",
+    "showAll": "Show all",
+    "noCustomTags": "No custom tags in your library yet",
+    "tooltip": "Choose visible fields"
   },
   "scrobbling": {
     "listenbrainz": "ListenBrainz",

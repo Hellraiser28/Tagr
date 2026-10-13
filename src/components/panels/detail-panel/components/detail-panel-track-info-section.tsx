@@ -3,6 +3,8 @@
 import { ClockIcon, HashIcon, Music2Icon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Song } from '@/features/songs/domain'
+import { getDetailPanelSectionFields } from '@/features/songs/detail-panel-fields'
+import { useDetailPanelFields } from '@/features/songs/hooks/use-detail-panel-fields'
 import { formatDuration } from '@/lib/formatters'
 import { DetailPanelRow } from './detail-panel-row/detail-panel-row'
 import { DetailPanelSection } from './detail-panel-section'
@@ -14,48 +16,59 @@ interface DetailPanelTrackInfoSectionProps {
 export function DetailPanelTrackInfoSection({ song }: DetailPanelTrackInfoSectionProps) {
   const tSection = useTranslations('trackInfo')
   const t = useTranslations('fields')
+  const { isFieldVisible } = useDetailPanelFields()
+
+  if (!getDetailPanelSectionFields('trackInfo').some(isFieldVisible)) return null
 
   return (
     <DetailPanelSection title={tSection('title')}>
-      {song.duration && (
+      {song.duration && isFieldVisible('duration') && (
         <DetailPanelRow
           icon={<ClockIcon className='w-4 h-4' />}
           label={t('duration')}
           value={formatDuration(song.duration)!}
         />
       )}
-      <DetailPanelRow
-        icon={<HashIcon className='w-4 h-4' />}
-        label={t('trackNumber')}
-        value={song.trackNumber}
-        songId={song.id}
-        fieldName='trackNumber'
-        type='number'
-      />
-      <DetailPanelRow
-        icon={<HashIcon className='w-4 h-4' />}
-        label={t('trackTotal')}
-        value={song.trackTotal}
-        songId={song.id}
-        fieldName='trackTotal'
-        type='number'
-      />
-      <DetailPanelRow
-        icon={<Music2Icon className='w-4 h-4' />}
-        label={t('discNumber')}
-        value={song.discNumber}
-        songId={song.id}
-        fieldName='discNumber'
-        type='number'
-      />
-      <DetailPanelRow
-        icon={<Music2Icon className='w-4 h-4' />}
-        label={t('discTotal')}
-        value={song.discTotal}
-        songId={song.id}
-        fieldName='discTotal'
-        type='number'
-      />
+      {isFieldVisible('trackNumber') && (
+        <DetailPanelRow
+          icon={<HashIcon className='w-4 h-4' />}
+          label={t('trackNumber')}
+          value={song.trackNumber}
+          songId={song.id}
+          fieldName='trackNumber'
+          type='number'
+        />
+      )}
+      {isFieldVisible('trackTotal') && (
+        <DetailPanelRow
+          icon={<HashIcon className='w-4 h-4' />}
+          label={t('trackTotal')}
+          value={song.trackTotal}
+          songId={song.id}
+          fieldName='trackTotal'
+          type='number'
+        />
+      )}
+      {isFieldVisible('discNumber') && (
+        <DetailPanelRow
+          icon={<Music2Icon className='w-4 h-4' />}
+          label={t('discNumber')}
+          value={song.discNumber}
+          songId={song.id}
+          fieldName='discNumber'
+          type='number'
+        />
+      )}
+      {isFieldVisible('discTotal') && (
+        <DetailPanelRow
+          icon={<Music2Icon className='w-4 h-4' />}
+          label={t('discTotal')}
+          value={song.discTotal}
+          songId={song.id}
+          fieldName='discTotal'
+          type='number'
+        />
+      )}
     </DetailPanelSection>
   )
 }
