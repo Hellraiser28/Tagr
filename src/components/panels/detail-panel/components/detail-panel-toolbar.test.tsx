@@ -25,6 +25,11 @@ vi.mock('@/components/history-modal/history-modal', () => ({
   HistoryModal: () => null
 }))
 
+vi.mock('@/components/settings-modal/settings-modal', () => ({
+  SettingsModal: ({ open, section }: { open: boolean; section?: string }) =>
+    open ? <div data-testid='settings-modal'>{section}</div> : null
+}))
+
 const mockSong = { id: 1, title: 'Test Song' } as Song
 
 const defaultProps = {
@@ -123,6 +128,35 @@ describe('DetailPanelToolbar - role-based actions', () => {
     it.each(['admin', 'tagger', 'listener'])('%s sees download cover', async role => {
       await renderAndOpenMobileMenu(role)
       expect(screen.getByText('previewCard.downloadCover')).toBeInTheDocument()
+    })
+  })
+
+  describe('field visibility settings', () => {
+    it.each(['admin', 'tagger', 'listener'])('%s sees the field visibility button', role => {
+      const { container } = renderToolbar(role)
+      const desktop = container.querySelector('.hidden.md\\:flex')!
+
+      expect(desktop.querySelector('.lucide-eye-dashed')).toBeInTheDocument()
+    })
+
+    it('opens the settings on the song panel section from the desktop button', async () => {
+      const user = userEvent.setup()
+      const { container } = renderToolbar('listener')
+      const desktop = container.querySelector('.hidden.md\\:flex')!
+
+      expect(screen.queryByTestId('settings-modal')).not.toBeInTheDocument()
+
+      await user.click(desktop.querySelector('.lucide-eye-dashed')!.closest('button')!)
+
+      expect(screen.getByTestId('settings-modal')).toHaveTextContent('detailPanel')
+    })
+
+    it('opens the settings on the song panel section from the mobile menu', async () => {
+      await renderAndOpenMobileMenu('listener')
+
+      await userEvent.setup().click(screen.getByText('detailPanelSettings.tooltip'))
+
+      expect(screen.getByTestId('settings-modal')).toHaveTextContent('detailPanel')
     })
   })
 })
