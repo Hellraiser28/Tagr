@@ -248,7 +248,7 @@ pnpm dev                 # Development mode
 | `EXCLUDE_FOLDERS` | No | Comma-separated folder names, globs or regex patterns to skip, on top of the built-in ones. See [Excluding folders](#excluding-folders). |
 | `PUID` | No | User ID for the container process. Defaults to `1000`. (Docker only) |
 | `PGID` | No | Group ID for the container process. Defaults to `1000`. (Docker only) |
-| `TAGR_INSIGHTS` | No | Set to `false` to stop sending [Insights](#insights). `DO_NOT_TRACK=1` does the same. |
+| `TAGR_INSIGHTS` | No | Set to `false` to stop sending [Insights](#insights). |
 
 ### Excluding folders
 
@@ -335,7 +335,7 @@ the setting is changed in **Settings → Insights**, which also shows the exact 
 server. After that, a report goes out 30 minutes after start-up and then every 24 hours. The container log also
 says at start-up whether statistics are on.
 
-To opt out, untick it in **Settings → Insights**, or set `TAGR_INSIGHTS=false` (or `DO_NOT_TRACK=1`) to
+To opt out, untick it in **Settings → Insights**, or set `TAGR_INSIGHTS=false` to
 turn it off for good. The collector is open source: [suitux/tagr-insights](https://github.com/suitux/tagr-insights).
 
 ---

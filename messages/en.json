@@ -539,7 +539,7 @@
     "title": "Insights",
     "description": "Insights are Tagr's anonymous usage statistics. Once a day Tagr sends a small report (version, library size, which features are used) so we know how many people use it and what to improve. It never includes file names, paths, tags or user names.",
     "enable": "Send Insights (anonymous usage statistics)",
-    "forcedByEnv": "Disabled by the TAGR_INSIGHTS or DO_NOT_TRACK environment variable.",
+    "forcedByEnv": "Disabled by the TAGR_INSIGHTS environment variable.",
     "lastSent": "Last report sent on {date}.",
     "neverSent": "No report sent yet.",
     "dashboard": "The aggregated results are public: <link>see the dashboard</link>.",

@@ -46,15 +46,13 @@ describe('insights.service', () => {
   describe('getEnvInsightsOverride', () => {
     it('is null when no env var is set', () => {
       vi.stubEnv('TAGR_INSIGHTS', '')
-      vi.stubEnv('DO_NOT_TRACK', '')
       expect(getEnvInsightsOverride()).toBeNull()
     })
 
     it.each([
       ['TAGR_INSIGHTS', 'false'],
       ['TAGR_INSIGHTS', 'off'],
-      ['DO_NOT_TRACK', '1'],
-      ['DO_NOT_TRACK', 'true']
+      ['TAGR_INSIGHTS', '0']
     ])('disables with %s=%s', (name, value) => {
       vi.stubEnv(name, value)
       expect(getEnvInsightsOverride()).toBe(false)
@@ -73,7 +71,7 @@ describe('insights.service', () => {
     })
 
     it('lets the env var win over the toggle', async () => {
-      vi.stubEnv('DO_NOT_TRACK', '1')
+      vi.stubEnv('TAGR_INSIGHTS', 'false')
       mockGetAppProperty.mockResolvedValue('true')
       expect(await isInsightsEnabled()).toBe(false)
     })

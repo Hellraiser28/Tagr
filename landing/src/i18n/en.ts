@@ -588,12 +588,6 @@ export const en = {
             desc: 'Set to false to turn off Insights, the anonymous daily usage report, for good. It overrides the Settings toggle, and the admin is never asked about it.',
             example: 'false',
           },
-          {
-            name: 'DO_NOT_TRACK',
-            required: 'No',
-            desc: 'Set to 1 to turn off Insights, same as TAGR_INSIGHTS=false. Follows the Console Do Not Track convention.',
-            example: '1',
-          },
         ],
       },
       manual: {

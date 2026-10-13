@@ -23,13 +23,10 @@ export function getInsightsEndpoint(): string {
   return process.env.TAGR_INSIGHTS_ENDPOINT || INSIGHTS_ENDPOINT
 }
 
-/** An env var wins over the Settings toggle: `false` from either TAGR_INSIGHTS or DO_NOT_TRACK. */
+/** The env var wins over the Settings toggle: TAGR_INSIGHTS=false turns Insights off for good. */
 export function getEnvInsightsOverride(): boolean | null {
   const flag = process.env.TAGR_INSIGHTS?.trim().toLowerCase()
   if (flag === 'false' || flag === '0' || flag === 'off') return false
-
-  const doNotTrack = process.env.DO_NOT_TRACK?.trim().toLowerCase()
-  if (doNotTrack === '1' || doNotTrack === 'true') return false
 
   return null
 }
@@ -175,7 +172,7 @@ export async function getInsightsStatus(): Promise<InsightsStatus> {
 export async function logInsightsStartupState(): Promise<void> {
   try {
     if (getEnvInsightsOverride() === false) {
-      console.info('Insights (anonymous usage statistics) are disabled by TAGR_INSIGHTS / DO_NOT_TRACK.')
+      console.info('Insights (anonymous usage statistics) are disabled by TAGR_INSIGHTS.')
       return
     }
     if (!(await isInsightsEnabled())) {
