@@ -1,8 +1,14 @@
 import { auth } from '@/auth'
 import { WelcomeScanState } from '@/components/welcome-scan-state'
-import { DEFAULT_SORT_ORDER, DEFAULT_VISIBLE_COLUMNS } from '@/features/config/domain'
-import { getConfigQueryKey } from '@/features/config/hooks/use-config'
 import { getConfigValue } from '@/features/config/config.repository'
+import {
+  type ConfigKey,
+  DEFAULT_DETAIL_PANEL_FIELDS,
+  DEFAULT_SORT_ORDER,
+  DEFAULT_VISIBLE_COLUMNS
+} from '@/features/config/domain'
+import { getConfigQueryKey } from '@/features/config/hooks/use-config'
+import prefetchConfig from '@/features/config/prefetch'
 import { countSongs } from '@/features/songs/songs.repository'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import { AppShell } from './app-shell'
@@ -11,7 +17,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const songCount = await countSongs()
-  const session = await auth()
+  const session = (await auth())!
 
   if (songCount === 0) {
     return <WelcomeScanState />
@@ -20,22 +26,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const queryClient = new QueryClient()
 
   await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: getConfigQueryKey('columnVisibility'),
-      queryFn: async () => {
-        const configValue = await getConfigValue(session!.user.id, 'columnVisibility')
-
-        return configValue ? JSON.parse(configValue) : DEFAULT_VISIBLE_COLUMNS
-      }
-    }),
-    queryClient.prefetchQuery({
-      queryKey: getConfigQueryKey('sortOrder'),
-      queryFn: async () => {
-        const configValue = await getConfigValue(session!.user.id, 'sortOrder')
-
-        return configValue ? JSON.parse(configValue) : DEFAULT_SORT_ORDER
-      }
-    })
+    prefetchConfig(queryClient, session, 'columnVisibility', DEFAULT_VISIBLE_COLUMNS),
+    prefetchConfig(queryClient, session, 'sortOrder', DEFAULT_SORT_ORDER),
+    prefetchConfig(queryClient, session, 'detailPanelFields', DEFAULT_DETAIL_PANEL_FIELDS)
   ])
 
   return (

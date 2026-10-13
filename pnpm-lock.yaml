@@ -33,8 +33,8 @@ importers:
         specifier: 10.3.1
         version: 10.3.1(react@19.2.3)
       audiotagr:
-        specifier: 0.1.3
-        version: 0.1.3
+        specifier: 0.2.0
+        version: 0.2.0
       axios:
         specifier: 1.15.2
         version: 1.15.2
@@ -51,8 +51,8 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       lucide-react:
-        specifier: 0.574.0
-        version: 0.574.0(react@19.2.3)
+        specifier: 1.55.0
+        version: 1.55.0(@types/react@19.2.18)(react@19.2.3)
       next:
         specifier: 16.3.1
         version: 16.3.1(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -3001,8 +3001,8 @@ packages:
     resolution: {integrity: sha512-Xcz9l0z7y9yQ9rdDaxlmaI4uJHf/T8g9hOEzJcsEqX2SjCj4J20uK7+ldkDHMbpJDK76wF7xEIgxc/vSlsfw5w==}
     engines: {node: '>=10.12.0'}
 
-  audiotagr@0.1.3:
-    resolution: {integrity: sha512-YQGema6egznA3KObi7QqIBk8V6FHOdC05d4tVG4hCZmHkpiZnACuup5djlEW1Yb02hi1KTUV4IWw8/g6+1qEjw==}
+  audiotagr@0.2.0:
+    resolution: {integrity: sha512-SU6sAaOh4cL/sCnFHsThKn53Cl7LVe+HHJJjBw00Kzp/lWw0YmEdm4+izBk8bLB7lJo/TnCiaHzbNqcCYKCYyw==}
     engines: {node: '>=20'}
 
   available-typed-arrays@1.0.7:
@@ -4582,10 +4582,14 @@ packages:
     resolution: {integrity: sha512-DqC6n3QQ77zdFpCMASA1a3Jlb64Hv2N2DciFGkO/4L9+q/IpIAuRlKOvCXabtRW6cQf8usbmM6BE/TOPysCdIA==}
     engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
 
-  lucide-react@0.574.0:
-    resolution: {integrity: sha512-dJ8xb5juiZVIbdSn3HTyHsjjIwUwZ4FNwV0RtYDScOyySOeie1oXZTymST6YPJ4Qwt3Po8g4quhYl4OxtACiuQ==}
+  lucide-react@1.55.0:
+    resolution: {integrity: sha512-bSozQHiI3/8q7JvgoqVRGOYUi7fYT3siAZwmZsljjsOH2Husp/2ODdFf/leD+ZC/2yKfn7r8oh6yeoR3ITR5vA==}
     peerDependencies:
+      '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -9030,7 +9034,7 @@ snapshots:
 
   atomically@1.7.0: {}
 
-  audiotagr@0.1.3:
+  audiotagr@0.2.0:
     dependencies:
       music-metadata: 11.12.3
       node-taglib-sharp: 6.0.1
@@ -10689,9 +10693,11 @@ snapshots:
 
   lru.min@1.1.4: {}
 
-  lucide-react@0.574.0(react@19.2.3):
+  lucide-react@1.55.0(@types/react@19.2.18)(react@19.2.3):
     dependencies:
       react: 19.2.3
+    optionalDependencies:
+      '@types/react': 19.2.18
 
   lz-string@1.5.0: {}
 

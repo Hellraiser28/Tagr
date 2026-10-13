@@ -1,12 +1,22 @@
 'use client'
 
-import { EllipsisVerticalIcon, HistoryIcon, ImageDownIcon, ImageUpIcon, RefreshCwIcon, Share2Icon, XIcon } from 'lucide-react'
+import {
+  EllipsisVerticalIcon,
+  HistoryIcon,
+  ImageDownIcon,
+  ImageUpIcon,
+  RefreshCwIcon,
+  Share2Icon,
+  EyeDashedIcon,
+  XIcon
+} from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import type { UserRole } from '@/features/users/domain'
 import { hasMinimumRole } from '@/features/users/lib/hasMinimumRole'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { HistoryModal } from '@/components/history-modal/history-modal'
+import { SettingsModal } from '@/components/settings-modal/settings-modal'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -34,10 +44,12 @@ export function DetailPanelToolbar({ song, displayTitle, onShare, onMusicBrainzL
   const tMusicBrainz = useTranslations('musicbrainzLookup')
   const tShare = useTranslations('share')
   const tPreviewCard = useTranslations('previewCard')
+  const tDetailPanelSettings = useTranslations('detailPanelSettings')
   const { data: session } = useSession()
   const { setSelectedSongId } = useSelectedSong()
   const { mutate: rescanSong, isPending: isRescanning } = useRescanSong()
   const [historyOpen, setHistoryOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const canEdit = hasMinimumRole(session?.user?.role as UserRole, 'tagger')
 
   return (
@@ -59,6 +71,14 @@ export function DetailPanelToolbar({ song, displayTitle, onShare, onMusicBrainzL
               </Button>
             </TooltipTrigger>
             <TooltipContent>{tShare('tooltip')}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant='ghost' size='icon' className='h-7 w-7' onClick={() => setSettingsOpen(true)}>
+                <EyeDashedIcon className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{tDetailPanelSettings('tooltip')}</TooltipContent>
           </Tooltip>
           {canEdit && (
             <>
@@ -103,6 +123,10 @@ export function DetailPanelToolbar({ song, displayTitle, onShare, onMusicBrainzL
                 <ImageDownIcon />
                 {tPreviewCard('downloadCover')}
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSettingsOpen(true)}>
+                <EyeDashedIcon />
+                {tDetailPanelSettings('tooltip')}
+              </DropdownMenuItem>
               {canEdit && (
                 <>
                   <DropdownMenuItem onClick={onEditCover}>
@@ -125,6 +149,7 @@ export function DetailPanelToolbar({ song, displayTitle, onShare, onMusicBrainzL
       </div>
 
       <HistoryModal open={historyOpen} onOpenChange={setHistoryOpen} songId={song.id} songTitle={displayTitle} />
+      <SettingsModal open={settingsOpen} onOpenChange={setSettingsOpen} section='detailPanel' />
     </>
   )
 }

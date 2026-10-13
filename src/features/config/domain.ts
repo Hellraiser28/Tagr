@@ -1,5 +1,6 @@
 import type { MusicBrainzSearchField } from '@/features/musicbrainz/domain'
 import { ColumnField, SongSortDirection } from '@/features/songs/domain'
+import type { DetailPanelField } from '@/features/songs/detail-panel-fields'
 import type { BulkEditableField } from '@/features/songs/song-fields'
 
 export type ConfigKey =
@@ -9,6 +10,7 @@ export type ConfigKey =
   | 'sortOrder'
   | 'musicbrainzSearchFields'
   | 'bulkEditFields'
+  | 'detailPanelFields'
 
 /** Which inputs the MusicBrainz lookup form shows. */
 export type MusicBrainzSearchFieldsState = Record<MusicBrainzSearchField, boolean>
@@ -24,6 +26,18 @@ export type BulkEditFieldsState = {
 }
 
 export const DEFAULT_BULK_EDIT_FIELDS: BulkEditFieldsState = {}
+
+/**
+ * Which rows the song detail panel shows. Both lists name what is hidden, so an absent config shows
+ * everything and a custom tag seen for the first time shows up until it is hidden.
+ */
+export type DetailPanelFieldsState = {
+  hidden?: DetailPanelField[]
+  /** Extended tag keys (uppercase, no prefix). */
+  hiddenCustom?: string[]
+}
+
+export const DEFAULT_DETAIL_PANEL_FIELDS: DetailPanelFieldsState = {}
 
 export type SortOrderState = {
   sortField?: ColumnField

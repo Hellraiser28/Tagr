@@ -1,6 +1,6 @@
 'use client'
 
-import { PlugIcon, SettingsIcon, UsersIcon, type LucideIcon } from 'lucide-react'
+import { ChartNoAxesColumnIcon, PanelRightIcon, PlugIcon, SettingsIcon, UsersIcon, type LucideIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { UserRole } from '@/features/users/domain'
 import { hasMinimumRole } from '@/features/users/lib/hasMinimumRole'
 import { useBreakpoint } from '@/hooks/use-breakpoint'
+import { DetailPanelSettings } from './components/detail-panel-settings'
+import { InsightsSettings } from './components/insights-settings'
 import { ListenBrainzSettings } from './components/listenbrainz-settings'
 import { UsersSettings } from './components/users-settings/users-settings'
 
@@ -29,7 +31,15 @@ const SETTINGS_SECTIONS = [
     icon: PlugIcon,
     minimumRole: 'listener',
     Content: ListenBrainzSettings
-  }
+  },
+  {
+    id: 'detailPanel',
+    labelKey: 'detailPanel',
+    icon: PanelRightIcon,
+    minimumRole: 'listener',
+    Content: DetailPanelSettings
+  },
+  { id: 'insights', labelKey: 'insights', icon: ChartNoAxesColumnIcon, minimumRole: 'admin', Content: InsightsSettings }
 ] as const satisfies readonly SettingsSectionDefinition[]
 
 export type SettingsSection = (typeof SETTINGS_SECTIONS)[number]['id']
@@ -85,7 +95,7 @@ export function SettingsModal({ open, onOpenChange, section }: SettingsModalProp
           <Separator orientation={breakpoint === 'mobile' ? 'horizontal' : 'vertical'} />
 
           {sections.map(({ id, Content }) => (
-            <TabsContent key={id} value={id} className='max-h-[60vh] min-w-0 overflow-y-auto'>
+            <TabsContent key={id} value={id} className='h-[60vh] min-w-0 overflow-y-auto'>
               <Content />
             </TabsContent>
           ))}

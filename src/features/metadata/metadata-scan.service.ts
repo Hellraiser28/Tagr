@@ -12,6 +12,7 @@ import {
   replaceScannedSongByFilePath,
   replaceScannedSongById
 } from '@/features/songs/songs.repository'
+import { isExcludedFolder } from '@/features/songs/song-file-helpers'
 
 function emptyResult(): ScanResult {
   return {
@@ -80,7 +81,10 @@ export async function scanFolderAndUpdateDatabase(
 
   const shouldSkip = mode === 'quick' ? await buildSkipCheck(folderPath) : undefined
 
-  for await (const item of scanFolder(folderPath, { shouldSkip })) {
+  for await (const item of scanFolder(folderPath, {
+    shouldSkip,
+    shouldSkipDirectory: (_dirPath, name) => isExcludedFolder(name)
+  })) {
     onProgress?.(item.progress)
     scannedPaths.add(item.filePath)
 
