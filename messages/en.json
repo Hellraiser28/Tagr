@@ -514,7 +514,8 @@
       "users": "Users",
       "integrations": "Third party integrations",
       "detailPanel": "Song panel",
-      "insights": "Insights"
+      "insights": "Insights",
+      "language": "Language"
     }
   },
   "detailPanelSettings": {
@@ -523,6 +524,12 @@
     "showAll": "Show all",
     "noCustomTags": "No custom tags in your library yet",
     "tooltip": "Choose visible fields"
+  },
+  "languageSettings": {
+    "title": "Language",
+    "description": "Choose the language Tagr is shown in. Automatic follows your browser's language.",
+    "label": "Interface language",
+    "automatic": "Automatic"
   },
   "scrobbling": {
     "listenbrainz": "ListenBrainz",
