@@ -95,7 +95,7 @@ export function SettingsModal({ open, onOpenChange, section }: SettingsModalProp
           <Separator orientation={breakpoint === 'mobile' ? 'horizontal' : 'vertical'} />
 
           {sections.map(({ id, Content }) => (
-            <TabsContent key={id} value={id} className='max-h-[60vh] min-w-0 overflow-y-auto'>
+            <TabsContent key={id} value={id} className='h-[60vh] min-w-0 overflow-y-auto'>
               <Content />
             </TabsContent>
           ))}
