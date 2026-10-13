@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import { NextResponse } from 'next/server'
 import { FolderContent, Subfolder } from '@/features/folders/domain'
-import { DEFAULT_MUSIC_FOLDER, isMusicFile } from '@/features/songs/song-file-helpers'
+import { DEFAULT_MUSIC_FOLDER, isExcludedFolder, isMusicFile } from '@/features/songs/song-file-helpers'
 import { TFunction } from '@/i18n/types'
 
 function buildSummary(results: FolderContent[]) {
@@ -50,6 +50,7 @@ export async function searchFoldersRecursive(rootFolders: string[], query: strin
 
       for (const entry of entries) {
         if (entry.isDirectory()) {
+          if (isExcludedFolder(entry.name)) continue
           subfolders.push({ name: entry.name, path: path.join(dirPath, entry.name) })
         } else if (entry.isFile() && isMusicFile(entry.name)) {
           totalFiles++
@@ -100,6 +101,7 @@ export async function readMusicFolder(folderPath: string, t: TFunction): Promise
 
     for (const entry of entries) {
       if (entry.isDirectory()) {
+        if (isExcludedFolder(entry.name)) continue
         subfolders.push({
           name: entry.name,
           path: path.join(folderPath, entry.name)

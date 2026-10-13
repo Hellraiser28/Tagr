@@ -245,9 +245,42 @@ pnpm dev                 # Development mode
 | `AUTH_USER` | Yes | Username of the admin account. Additional users are created from **Settings → Users**. |
 | `AUTH_PASSWORD` | Yes | Password of the admin account (plain text). |
 | `MUSIC_FOLDERS` | No | Comma-separated list of paths to music directories. Defaults to `/music` if not set. |
+| `EXCLUDE_FOLDERS` | No | Comma-separated folder names, globs or regex patterns to skip, on top of the built-in ones. See [Excluding folders](#excluding-folders). |
 | `PUID` | No | User ID for the container process. Defaults to `1000`. (Docker only) |
 | `PGID` | No | Group ID for the container process. Defaults to `1000`. (Docker only) |
 | `TAGR_INSIGHTS` | No | Set to `false` to stop sending [Insights](#insights). `DO_NOT_TRACK=1` does the same. |
+
+### Excluding folders
+
+Some folders are never shown in the folder tree nor scanned, at any depth:
+
+- Every hidden folder (name starting with `.`: `.Trash`, `.AppleDouble`, `.@__thumb`, …)
+- NAS and OS system folders: `@eaDir` (Synology thumbnails), `#recycle` (Synology), `@Recycle` (QNAP), `#snapshot`, `@Recently-Snapshot`, `$RECYCLE.BIN`, `System Volume Information`, `lost+found`
+
+Add your own with `EXCLUDE_FOLDERS`, a comma-separated list. Each entry is a plain folder name, a glob or a regular expression, and is matched case-insensitively against the **whole folder name** (not the full path):
+
+```env
+# Skip "Podcasts", anything containing "test", "Temp1"…"Temp9", and anything ending in "_backup"
+EXCLUDE_FOLDERS="Podcasts,*test*,Temp?,.*_backup"
+```
+
+An entry is read as a **regex** when it uses regex-only syntax — `\ ^ $ + ( ) [ ] { } |`, or `.*` / `.+` / `.?`. Anything else is a **glob**: `*` matches any run of characters, `?` exactly one, and every other character (dots included) is literal.
+
+| Entry | Type | Matches | Doesn't match |
+|-------|------|---------|---------------|
+| `Podcasts` | name | `Podcasts`, `podcasts` | `My Podcasts` |
+| `Vol. 1` | name | `Vol. 1` | `Vol_ 1` |
+| `*test*` | glob | `test`, `My Tests` | `tes` |
+| `Temp?` | glob | `Temp1`, `TempA` | `Temp`, `Temp12` |
+| `.*_backup` | regex | `Album_backup`, `_backup` | `backup_old` |
+| `Temp\d+` | regex | `Temp1`, `temp42` | `Temp`, `Temporary` |
+| `(Demos\|Live)` | regex | `Demos`, `Live` | `Live 2020` |
+
+Notes:
+
+- Entries are split on commas, so a pattern can't contain one (write `a{2,3}` as `aa|aaa`).
+- An invalid regex is ignored and logged as a server warning.
+- Songs already indexed from a newly excluded folder are removed on the next scan.
 
 ---
 
