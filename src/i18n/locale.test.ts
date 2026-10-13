@@ -12,15 +12,18 @@ describe('negotiateLocale', () => {
   it('matches a regional tag to its base language', () => {
     expect(negotiateLocale('de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7')).toBe('de')
     expect(negotiateLocale('de-AT')).toBe('de')
+    expect(negotiateLocale('es-MX')).toBe('es')
+    expect(negotiateLocale('fr-CA,fr;q=0.9')).toBe('fr')
   })
 
   it('respects quality values', () => {
     expect(negotiateLocale('en;q=0.5, de;q=0.9')).toBe('de')
-    expect(negotiateLocale('fr-FR,fr;q=0.9,de;q=0.8,en;q=0.7')).toBe('de')
+    expect(negotiateLocale('ja-JP,ja;q=0.9,de;q=0.8,en;q=0.7')).toBe('de')
+    expect(negotiateLocale('ca-ES,ca;q=0.9,es;q=0.8')).toBe('ca')
   })
 
   it('falls back when no supported language is requested', () => {
-    expect(negotiateLocale('fr-FR,fr;q=0.9')).toBe(defaultLocale)
+    expect(negotiateLocale('ja-JP,ja;q=0.9')).toBe(defaultLocale)
     expect(negotiateLocale('*')).toBe(defaultLocale)
     expect(negotiateLocale('de;q=0')).toBe(defaultLocale)
   })
@@ -36,7 +39,7 @@ describe('resolveLocale', () => {
     expect(resolveLocale(AUTOMATIC_LOCALE, 'de-DE')).toBe('de')
     expect(resolveLocale(null, 'de-DE')).toBe('de')
     expect(resolveLocale('', 'de-DE')).toBe('de')
-    expect(resolveLocale('fr', 'de-DE')).toBe('de')
+    expect(resolveLocale('ja', 'de-DE')).toBe('de')
     expect(resolveLocale(AUTOMATIC_LOCALE, null)).toBe(defaultLocale)
   })
 
