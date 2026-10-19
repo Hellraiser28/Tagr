@@ -9,6 +9,30 @@ let bufferingTimeout: ReturnType<typeof setTimeout> | null = null
 
 const MAX_HISTORY = 100
 
+const VOLUME_STORAGE_KEY = 'tagr-player-volume'
+
+function clampVolume(value: number): number {
+  return Number.isFinite(value) ? Math.min(Math.max(value, 0), 1) : 1
+}
+
+function loadVolume(): number {
+  if (typeof window === 'undefined') return 1
+  try {
+    const stored = window.localStorage.getItem(VOLUME_STORAGE_KEY)
+    return stored === null ? 1 : clampVolume(parseFloat(stored))
+  } catch {
+    return 1
+  }
+}
+
+function saveVolume(value: number) {
+  try {
+    window.localStorage.setItem(VOLUME_STORAGE_KEY, String(value))
+  } catch {
+    // Storage may be unavailable (private mode, blocked site data); the volume still applies for this session.
+  }
+}
+
 const listeners = {
   play: () => usePlayerStore.setState({ isPlaying: true }),
   pause: () => usePlayerStore.setState({ isPlaying: false }),
@@ -44,6 +68,7 @@ export function getAudio(): HTMLAudioElement | null {
     audio = new Audio()
     audio.preload = 'auto'
     audio.loop = usePlayerStore.getState().repeat
+    audio.volume = usePlayerStore.getState().volume
     for (const [event, handler] of Object.entries(listeners)) {
       audio.addEventListener(event, handler)
     }
@@ -99,6 +124,7 @@ interface PlayerState {
   shuffle: boolean
   shuffleTick: number
   repeat: boolean
+  volume: number
   _shuffleHistory: Song[]
   _shuffleHistoryIndex: number
 
@@ -112,6 +138,7 @@ interface PlayerState {
   setAdjacentLoading: (loading: boolean) => void
   toggleShuffle: () => void
   toggleRepeat: () => void
+  setVolume: (volume: number) => void
 }
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
@@ -131,6 +158,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   shuffle: false,
   shuffleTick: 0,
   repeat: false,
+  volume: loadVolume(),
   _shuffleHistory: [],
   _shuffleHistoryIndex: -1,
 
@@ -259,5 +287,13 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     set({ repeat: next })
     const a = getAudio()
     if (a) a.loop = next
+  },
+
+  setVolume: volume => {
+    const next = clampVolume(volume)
+    set({ volume: next })
+    saveVolume(next)
+    const a = getAudio()
+    if (a) a.volume = next
   }
 }))
