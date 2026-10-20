@@ -8,6 +8,7 @@ import { Waveform } from '@/components/waveform/waveform'
 import { useMediaSession } from '@/features/player/hooks/use-media-session'
 import { cn } from '@/lib/utils'
 import { usePlayerStore } from '@/stores/player-store'
+import { SidebarPlayerVolumeControl } from './sidebar-player-volume-control'
 
 interface SidebarPlayerAudioPlayerProps {
   expanded: boolean
@@ -71,6 +72,7 @@ export function SidebarPlayerAudioPlayer({ expanded }: SidebarPlayerAudioPlayerP
           aria-pressed={shuffle}>
           <ShuffleIcon className='h-3 w-3' />
         </Button>
+        <SidebarPlayerVolumeControl />
       </div>
 
       <div className={cn('flex items-center gap-2', expanded ? 'w-full' : 'flex-1')}>
