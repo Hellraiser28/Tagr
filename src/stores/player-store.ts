@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { clampVolume, loadVolume, saveVolume } from '@/features/player/volume'
 import { RESTART_SONG_THRESHOLD_S, Song, SongColumnFilters } from '@/features/songs/domain'
 import type { SongsSortParams } from '@/features/songs/hooks/use-songs-by-folder'
 import { getSongAudioUrl } from '@/features/songs/song-file-helpers'
@@ -8,30 +9,6 @@ let audio: HTMLAudioElement | null = null
 let bufferingTimeout: ReturnType<typeof setTimeout> | null = null
 
 const MAX_HISTORY = 100
-
-const VOLUME_STORAGE_KEY = 'tagr-player-volume'
-
-function clampVolume(value: number): number {
-  return Number.isFinite(value) ? Math.min(Math.max(value, 0), 1) : 1
-}
-
-function loadVolume(): number {
-  if (typeof window === 'undefined') return 1
-  try {
-    const stored = window.localStorage.getItem(VOLUME_STORAGE_KEY)
-    return stored === null ? 1 : clampVolume(parseFloat(stored))
-  } catch {
-    return 1
-  }
-}
-
-function saveVolume(value: number) {
-  try {
-    window.localStorage.setItem(VOLUME_STORAGE_KEY, String(value))
-  } catch {
-    // Storage may be unavailable (private mode, blocked site data); the volume still applies for this session.
-  }
-}
 
 const listeners = {
   play: () => usePlayerStore.setState({ isPlaying: true }),

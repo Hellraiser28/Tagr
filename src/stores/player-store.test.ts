@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-const VOLUME_STORAGE_KEY = 'tagr-player-volume'
+import { VOLUME_STORAGE_KEY } from '@/features/player/volume'
 
 // The stored volume is read once when the store module is created, so each test
 // imports a fresh copy of the module after preparing localStorage.
